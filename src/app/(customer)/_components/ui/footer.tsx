@@ -1,5 +1,10 @@
-import { Button } from "@/components/ui/button"
-import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 import Image from "next/image"
 const footer = () => {
   return (
@@ -7,68 +12,96 @@ const footer = () => {
       <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
         {/* FAQ Section */}
         <div className="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="mb-4 text-lg font-semibold text-red-500 dark:text-white">
             Frequently Asked Questions
           </h2>
-          <ul className="space-y-3 text-gray-500 dark:text-gray-400">
-            <li>
-              <strong>Q:</strong> Do I need an account to book a movie ticket? <br />
-              <strong>A:</strong> No, our system allows booking without creating an account.
-            </li>
-            <li>
-              <strong>Q:</strong> Can I cancel or modify my booking? <br />
-              <strong>A:</strong> Yes, you can cancel or modify bookings within 24 hours of
-              purchase.
-            </li>
-            <li>
-              <strong>Q:</strong> How can I contact support? <br />
-              <strong>A:</strong> You can reach us via our contact page or email
-              support@example.com.
-            </li>
-          </ul>
+          <ul className="space-y-3 text-gray-500 dark:text-gray-400"></ul>
         </div>
 
-        <div className="flex flex-col gap-6">
-          <Item>
-            <ItemContent>
-              <ItemTitle>Default Variant</ItemTitle>
-              <ItemDescription>
-                Standard styling with subtle background and borders.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button variant="outline" size="sm">
-                Open
-              </Button>
-            </ItemActions>
-          </Item>
-          <Item variant="outline">
-            <ItemContent>
-              <ItemTitle>Outline Variant</ItemTitle>
-              <ItemDescription>
-                Outlined style with clear borders and transparent background.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button variant="outline" size="sm">
-                Open
-              </Button>
-            </ItemActions>
-          </Item>
-          <Item variant="muted">
-            <ItemContent>
-              <ItemTitle>Muted Variant</ItemTitle>
-              <ItemDescription>
-                Subdued appearance with muted colors for secondary content.
-              </ItemDescription>
-            </ItemContent>
-            <ItemActions>
-              <Button variant="outline" size="sm">
-                Open
-              </Button>
-            </ItemActions>
-          </Item>
-        </div>
+        {/*Accordion*/}
+        <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
+          <AccordionItem value="item-1">
+            <AccordionTrigger>How can I request a refund for my booking?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>
+                Refund requests are possible for eligible tickets. You can submit a refund form from
+                your
+                <strong> Bookings Dashboard</strong> or email our support team at
+                <strong> support@example.com</strong>.
+              </p>
+              <p>
+                Refund approval depends on cinema rules, showtime deadlines, and ticket type. Most
+                refunds are processed within <strong>3–7 business days</strong>.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-2">
+            <AccordionTrigger>Can I cancel or change my booking after payment?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>
+                Yes! Bookings can be modified or cancelled up to{" "}
+                <strong>2 hours before showtime</strong>. You can change seats, update showtimes, or
+                cancel entirely through your dashboard.
+              </p>
+              <p>
+                Cancellation fees may apply depending on the theatre partner and day of the week.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-3">
+            <AccordionTrigger>Do I need an account to buy a movie ticket?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>
+                No account is required for quick bookings. However, creating an account gives you
+                access to:
+              </p>
+              <ul className="list-disc space-y-2 pl-6 text-sm">
+                <li>Faster checkout experience</li>
+                <li>View and download past ticket receipts</li>
+                <li>Access loyalty points and rewards</li>
+                <li>Save preferred cinemas and payment methods</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-4">
+            <AccordionTrigger>How do I receive my movie ticket?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>
+                Once payment is completed, tickets are instantly sent to your email and also
+                available in your account dashboard under <strong>"My Tickets"</strong>.
+              </p>
+              <p>You can show the QR code at the cinema counter to enter.</p>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-5">
+            <AccordionTrigger>What payment methods do you accept?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>We accept all major payment methods, including:</p>
+              <ul className="list-disc space-y-2 pl-6 text-sm">
+                <li>Credit/Debit Cards (Visa, MasterCard, Amex)</li>
+                <li>UPI / Digital Wallets</li>
+                <li>Net Banking</li>
+                <li>Gift Cards & Promo Codes</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+
+          <AccordionItem value="item-6">
+            <AccordionTrigger>Is my payment information secure?</AccordionTrigger>
+            <AccordionContent className="flex flex-col gap-4 text-balance">
+              <p>
+                Absolutely. We use bank-grade SSL encryption and never store your full card details.
+              </p>
+              <p>Our system meets PCI-DSS and industry security standards.</p>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        {/** Contact Footer */}
         <div className="mt-10 lg:flex lg:justify-between">
           <div className="mb-6 lg:mb-0">
             <a href="/" className="flex items-center">
@@ -141,9 +174,7 @@ const footer = () => {
             </div>
           </div>
         </div>
-
         <hr className="my-6 border-gray-200 dark:border-gray-700 sm:mx-auto lg:my-8" />
-
         {/* Footer Bottom */}
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
