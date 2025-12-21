@@ -1,8 +1,7 @@
 "use client"
-
-import Carousel from "@/components/Carousel"
 import TitleTypography from "@/components/TitleTypography"
 import { Button } from "@/components/ui/button"
+import Carousel from "../_components/ui/Carousel"
 
 import { Prisma } from "@prisma/client"
 import { format } from "date-fns"
@@ -14,6 +13,16 @@ interface Props {
 }
 
 const Shows = ({ shows }: Props) => {
+  if (!shows || shows.length === 0) {
+    return (
+      <section className="mb-12">
+        <div className="container">
+          <h2 className="mb-8 text-3xl font-bold">Shows Time</h2>
+          <p>Currently, no shows found.</p>
+        </div>
+      </section>
+    )
+  }
   return (
     <>
       <section className="mb-12">
@@ -23,9 +32,10 @@ const Shows = ({ shows }: Props) => {
         {shows.length > 0 ? (
           <Carousel
             items={shows}
+            interval={3000}
             render={(show) => {
               return (
-                <div className="flex select-none flex-col items-center">
+                <div className="m-4 flex select-none flex-col items-center">
                   <div className="relative aspect-[2/3] w-full max-w-[350px] overflow-hidden rounded-lg">
                     <Link href={`/movies/${show.movie.title.replaceAll(" ", "_")}`}>
                       <Image
