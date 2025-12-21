@@ -1,5 +1,7 @@
-import Nav from "./_components/Nav"
+import Footer from "@/app/(customer)/_components/ui/footer"
 
+import "../../styles/globals.css"
+import Nav from "./_components/Nav"
 const Layout = ({
   children,
 }: Readonly<{
@@ -9,6 +11,7 @@ const Layout = ({
     <>
       <Nav />
       <main>{children}</main>
+      <Footer />
     </>
   )
 }

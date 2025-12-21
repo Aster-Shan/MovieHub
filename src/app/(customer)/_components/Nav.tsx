@@ -10,7 +10,7 @@ import {
   DropdownMenuPortal,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Headset, Menu, ShoppingCart, Ticket } from "lucide-react"
+import { Menu, ShoppingCart, Ticket } from "lucide-react"
 import Link from "next/link"
 
 import clsx from "clsx"
@@ -40,7 +40,7 @@ const Nav = () => {
 
 const links = [
   { href: "/booking", title: "Booking", icon: Ticket },
-  { href: "/contact", title: "Contact", icon: Headset },
+
   { href: "/tickets", title: "My tickets", icon: ShoppingCart },
 ]
 const NavLinks = ({ path }: { path: string }) => {
