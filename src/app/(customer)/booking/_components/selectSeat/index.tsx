@@ -5,11 +5,11 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
+import { getSeats } from "@/server-actions/booking"
 import { Prisma } from "@prisma/client"
 import { useQuery } from "@tanstack/react-query"
 import clsx from "clsx"
 import { useMemo } from "react"
-import { getSeats } from "@/server-actions/booking"
 import { useBookingFormContext } from "../booking-hooks"
 
 const SelectSeat = () => {
@@ -72,7 +72,7 @@ const SelectSeat = () => {
                   {seats.map((c, ci) => {
                     return (
                       <div key={ci}>
-                        <div className="my-2">{`${c[0][0].class} - ${c[0][0].price} Ks`}</div>
+                        <div className="my-2">{`${c[0][0].class} - ${c[0][0].price} GBP`}</div>
                         {c.map((row, ri) => {
                           return (
                             <div key={ri}>

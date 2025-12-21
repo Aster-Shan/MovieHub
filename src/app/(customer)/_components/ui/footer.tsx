@@ -4,8 +4,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-
 import Image from "next/image"
+import Link from "next/link"
+import { FaEnvelope, FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa"
 const footer = () => {
   return (
     <footer className="bg-white dark:bg-gray-900">
@@ -71,7 +72,7 @@ const footer = () => {
             <AccordionContent className="flex flex-col gap-4 text-balance">
               <p>
                 Once payment is completed, tickets are instantly sent to your email and also
-                available in your account dashboard under <strong>"My Tickets"</strong>.
+                available in your account dashboard under <strong>&quot;My Tickets&quot;</strong>.
               </p>
               <p>You can show the QR code at the cinema counter to enter.</p>
             </AccordionContent>
@@ -121,29 +122,38 @@ const footer = () => {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
-                Resources
+                Follow us
               </h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
-                <li className="mb-4">
-                  <a href="https://nextjs.org/" className="hover:underline">
-                    Next.js
+                <li className="mb-4 flex items-center space-x-2">
+                  <FaFacebookF className="text-blue-600" />
+                  <a href="" className="hover:underline">
+                    Facebook
                   </a>
                 </li>
-                <li className="mb-4">
-                  <a href="https://www.prisma.io/" className="hover:underline">
-                    Prisma
+                <li className="mb-4 flex items-center space-x-2">
+                  <FaInstagram className="text-pink-500" />
+                  <a href="" className="hover:underline">
+                    Instagram
                   </a>
                 </li>
-                <li className="mb-4">
-                  <a href="https://ui.shadcn.com/" className="hover:underline">
-                    Shadcn/ui
+                <li className="mb-4 flex items-center space-x-2">
+                  <FaEnvelope className="text-gray-700" />
+                  <a href="" className="hover:underline">
+                    Email
+                  </a>
+                </li>
+                <li className="mb-4 flex items-center space-x-2">
+                  <FaTiktok className="text-black" />
+                  <a href="" className="hover:underline">
+                    Tiktok
                   </a>
                 </li>
               </ul>
             </div>
             <div>
               <h2 className="mb-6 text-sm font-semibold uppercase text-gray-900 dark:text-white">
-                Follow us
+                Resources
               </h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-4">
@@ -161,12 +171,12 @@ const footer = () => {
               </h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-4">
-                  <a href="#" className="hover:underline">
+                  <Link href="/policy" className="hover:underline">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="hover:underline">
+                  <a href="/tnc" className="hover:underline">
                     Terms &amp; Conditions
                   </a>
                 </li>
