@@ -2,11 +2,11 @@
 
 import TitleTypography from "@/components/TitleTypography"
 import { Button } from "@/components/ui/button"
+import { markBookingAsPaid } from "@/server-actions/booking"
 import { Loader2 } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
-
 const FakePay = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -29,6 +29,10 @@ const FakePay = () => {
   const isFormValid = isValidCardNumber && isValidExpiry && isValidCvv
 
   const handleFakePay = async () => {
+    if (!bookingId) {
+      toast.error("Missing booking ID.")
+      return
+    }
     if (!isFormValid) {
       toast.error("Please enter valid card details.")
       return
@@ -38,6 +42,8 @@ const FakePay = () => {
     try {
       // Simulate processing
       await new Promise((resolve) => setTimeout(resolve, 1500))
+
+      await markBookingAsPaid(bookingId, amount)
       toast.success(`Payment of £${amount.toLocaleString()} successful!`)
       setPaid(true)
 

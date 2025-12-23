@@ -1,13 +1,13 @@
 "use server"
 
 import { checkPermission } from "@/configs/auth"
+import db from "@/configs/db"
 import resend from "@/configs/resend"
 import { bookingClientSchema } from "@/validators/booking"
 import { Prisma } from "@prisma/client"
 import SuccessBooking from "emails/success-booking"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
-import db from "@/configs/db"
 
 export async function getMovies() {
   return await db.movie.findMany({
@@ -126,7 +126,8 @@ export async function deleteBooking(id: string) {
   }
 }
 
-export async function paid(bookingId: string) {
+export async function markBookingAsPaid(bookingId: string, amount: number) {
+  console.log("🔥 paid() CALLED with bookingId:", bookingId)
   const booking = await db.booking.findUnique({ where: { id: bookingId } })
   if (!booking || booking.status === "paid") return
 
@@ -148,8 +149,8 @@ export async function paid(bookingId: string) {
   })
 
   await resend.emails.send({
-    from: process.env.RESEND_DOMAIN!,
-    to: updatedBooking.email,
+    from: "MovieHub <onboarding@resend.dev>", //process.env.RESEND_DOMAIN!
+    to: "sam982024kk@gmail.com", //updatedBooking.email
     subject: "Thanks for your booking.",
     react: SuccessBooking({ booking: updatedBooking }),
   })
