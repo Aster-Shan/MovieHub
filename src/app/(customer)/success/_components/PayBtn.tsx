@@ -2,22 +2,22 @@
 
 import { Button } from "@/components/ui/button"
 import { Loader2 } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { toast } from "sonner"
 
-const PayBtn = ({ id }: { id: string }) => {
+interface PayBtnProps {
+  id: string
+  totalAmount: number
+}
+
+const PayBtn = ({ id, totalAmount }: PayBtnProps) => {
   const [loading, setLoading] = useState(false)
-
+  const router = useRouter()
   const pay = async () => {
     setLoading(true)
-    try {
-      // await paid(id)
-      toast.success("Fake pay feature is currently disabled for project showcase.")
-    } catch (error) {
-      toast.error("Something went wrong.")
-    }
-    setLoading(false)
+    setTimeout(() => {
+      router.push(`/FakePay?bookingId=${id}&amount=${totalAmount}`)
+    }, 800)
   }
 
   return (

@@ -21,12 +21,6 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
-enum Role {
-  admin
-  staff
-  test_staff
-}
-
 model Movie {
   id             String   @id @default(cuid())
   title          String   @unique
@@ -37,34 +31,30 @@ model Movie {
   genre          String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-
-  shows Show[]
+  shows          Show[]
 }
 
 model Show {
-  id        String   @id @default(cuid())
-  date      DateTime
-  startTime DateTime
-  endTime   DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  movieId String
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Restrict)
-
+  id               String             @id @default(cuid())
+  date             DateTime
+  startTime        DateTime
+  endTime          DateTime
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  movieId          String
+  movie            Movie              @relation(fields: [movieId], references: [id])
   showSeatRelation ShowSeatRelation[]
   tickets          Ticket[]
 }
 
 model Seat {
-  id        String   @id @default(cuid())
-  number    Int
-  row       String
-  class     String
-  price     Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id               String             @id @default(cuid())
+  number           Int
+  row              String
+  class            String
+  price            Float
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
   showSeatRelation ShowSeatRelation[]
   tickets          Ticket[]
 }
@@ -76,36 +66,39 @@ model Booking {
   status      BookingStatus @default(unpaid)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-
-  tickets Ticket[]
-}
-
-enum BookingStatus {
-  unpaid
-  paid
+  tickets     Ticket[]
 }
 
 model Ticket {
   id        String   @id @default(cuid())
   amount    Float
   createdAt DateTime @default(now())
-
   showId    String
-  show      Show    @relation(fields: [showId], references: [id], onDelete: Restrict)
   seatId    String
-  seat      Seat    @relation(fields: [seatId], references: [id], onDelete: Restrict)
   bookingId String
-  booking   Booking @relation(fields: [bookingId], references: [id], onDelete: Restrict)
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+  seat      Seat     @relation(fields: [seatId], references: [id])
+  show      Show     @relation(fields: [showId], references: [id])
 }
 
 model ShowSeatRelation {
   id     String     @id @default(cuid())
   status SeatStatus @default(available)
-
   showId String
-  show   Show   @relation(fields: [showId], references: [id], onDelete: Cascade)
   seatId String
-  seat   Seat   @relation(fields: [seatId], references: [id], onDelete: Restrict)
+  seat   Seat       @relation(fields: [seatId], references: [id])
+  show   Show       @relation(fields: [showId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  admin
+  staff
+  test_staff
+}
+
+enum BookingStatus {
+  unpaid
+  paid
 }
 
 enum SeatStatus {

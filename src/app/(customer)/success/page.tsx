@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/table"
 import PayBtn from "./_components/PayBtn"
 
+import db from "@/configs/db"
 import { formatShowTime } from "@/lib/utils"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import db from "@/configs/db"
 
 const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: string } }) => {
   if (!searchParams.bookingId) {
@@ -67,7 +67,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
                     <TableCell>
                       {formatShowTime(ticket.show.date, ticket.show.startTime, ticket.show.endTime)}
                     </TableCell>
-                    <TableCell>{ticket.amount.toLocaleString()} Ks</TableCell>
+                    <TableCell>{ticket.amount.toLocaleString()} GBP</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -75,7 +75,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
                 <TableRow>
                   <TableCell colSpan={2}></TableCell>
                   <TableCell>Total</TableCell>
-                  <TableCell>{booking.totalAmount.toLocaleString()} Ks</TableCell>
+                  <TableCell>{booking.totalAmount.toLocaleString()} GBP</TableCell>
                 </TableRow>
               </TableFooter>
             </Table>
@@ -83,7 +83,7 @@ const SuccessPage = async ({ searchParams }: { searchParams: { bookingId?: strin
         </Card>
 
         <div className="flex justify-center">
-          <PayBtn id={booking.id} />
+          <PayBtn id={booking.id} totalAmount={booking.totalAmount} />
         </div>
         <p className="mt-4 rounded-lg border border-yellow-600 bg-yellow-400/30 p-8 text-center">
           Booking will be automatically cancelled if it was not paid within 1 hour.

@@ -2,19 +2,19 @@
 
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
-  FormDescription,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 
+import { getCheckout } from "@/server-actions/booking"
+import { useQuery } from "@tanstack/react-query"
+import { format } from "date-fns"
 import Image from "next/image"
 import { useBookingFormContext } from "../booking-hooks"
-import { useQuery } from "@tanstack/react-query"
-import { getCheckout } from "@/server-actions/booking"
-import { format } from "date-fns"
 
 const Checkout = () => {
   const { control, getValues } = useBookingFormContext()
@@ -75,7 +75,7 @@ const Checkout = () => {
                   return t + c.price
                 }, 0)
                 .toLocaleString()}{" "}
-              Ks
+              GBP
             </h5>
           </div>
         </div>
