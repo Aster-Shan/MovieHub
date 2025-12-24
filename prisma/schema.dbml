@@ -64,20 +64,20 @@ Table Ticket {
   amount Float [not null]
   createdAt DateTime [default: `now()`, not null]
   showId String [not null]
-  show Show [not null]
   seatId String [not null]
-  seat Seat [not null]
   bookingId String [not null]
   booking Booking [not null]
+  seat Seat [not null]
+  show Show [not null]
 }
 
 Table ShowSeatRelation {
   id String [pk]
   status SeatStatus [not null, default: 'available']
   showId String [not null]
-  show Show [not null]
   seatId String [not null]
   seat Seat [not null]
+  show Show [not null]
 }
 
 Enum Role {
@@ -96,14 +96,14 @@ Enum SeatStatus {
   purchased
 }
 
-Ref: Show.movieId > Movie.id [delete: Restrict]
+Ref: Show.movieId > Movie.id
 
-Ref: Ticket.showId > Show.id [delete: Restrict]
+Ref: Ticket.bookingId > Booking.id
 
-Ref: Ticket.seatId > Seat.id [delete: Restrict]
+Ref: Ticket.seatId > Seat.id
 
-Ref: Ticket.bookingId > Booking.id [delete: Restrict]
+Ref: Ticket.showId > Show.id
+
+Ref: ShowSeatRelation.seatId > Seat.id
 
 Ref: ShowSeatRelation.showId > Show.id [delete: Cascade]
-
-Ref: ShowSeatRelation.seatId > Seat.id [delete: Restrict]

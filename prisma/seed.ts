@@ -2,6 +2,8 @@ import { faker } from "@faker-js/faker"
 import { Prisma, PrismaClient } from "@prisma/client"
 import bcrypt from "bcrypt"
 import "dotenv/config"
+
+// Environment variables check
 if (!process.env.ADMIN_PASSWORD) throw new Error("ADMIN_PASSWORD is not set")
 if (!process.env.ADMIN_USERNAME) throw new Error("ADMIN_USERNAME is not set")
 if (!process.env.CUSTOMER_EMAIL_SEED) throw new Error("CUSTOMER_EMAIL_SEED is not set")
@@ -9,10 +11,10 @@ if (!process.env.MOVIE_POSTER_SEED) throw new Error("MOVIE_POSTER_SEED is not se
 
 const db = new PrismaClient()
 
+// -------------------- Seed Admin User --------------------
 const seedUser = async () => {
   const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD!, 10)
-  console.log("Seeding user ... ")
-
+  console.log("Seeding admin user...")
   await db.user.create({
     data: {
       username: process.env.ADMIN_USERNAME!,
@@ -22,69 +24,43 @@ const seedUser = async () => {
   })
 }
 
-const seedMovie = async () => {
-  console.log("Seeding movies ... ")
-  const movieTitles: string[] = []
+// -------------------- Seed Movies --------------------
+const seedMovies = async () => {
+  console.log("Seeding movies...")
   const movies: Prisma.MovieCreateManyInput[] = []
+
   for (let i = 0; i < 5; i++) {
-    let title = faker.music.songName()
-    while (movieTitles.includes(title)) {
-      title = faker.music.songName()
-    }
-    movieTitles.push(title)
     movies.push({
-      title,
+      title: faker.music.songName(),
       description: faker.commerce.productDescription(),
       posterUrl: process.env.MOVIE_POSTER_SEED!,
       genre: faker.music.genre(),
-      durationInMins: faker.number.int({ min: 30, max: 150 }),
-      releaseDate: new Date(faker.date.soon({ days: 7 }).setHours(0, 0, 0, 0)),
+      durationInMins: faker.number.int({ min: 60, max: 180 }),
+      releaseDate: faker.date.soon({ days: 7 }),
     })
   }
+
   await db.movie.createMany({ data: movies })
 }
 
-const seedShow = async () => {
-  console.log("Seeding shows ... ")
-  const shows: Prisma.ShowCreateManyInput[] = []
-  const showSeatRelations: Prisma.ShowSeatRelationCreateManyInput[] = []
-
-  const movies = await db.movie.findMany()
-  movies.forEach(async (movie) => {
-    for (let i = 0; i < 5; i++) {
-      const showDate = faker.date.soon({ days: 7, refDate: movie.releaseDate })
-      showDate.setHours(0, 0, 0, 0)
-      const startTime = new Date(new Date(showDate).setHours(faker.number.int({ min: 8, max: 16 })))
-      const endTime = new Date(new Date(startTime).setHours(startTime.getHours() + 2))
-      shows.push({ movieId: movie.id, date: showDate, startTime, endTime })
-    }
-  })
-  await db.show.createMany({ data: shows })
-  const createdShows = await db.show.findMany()
-  const seats = await db.seat.findMany()
-  createdShows.forEach((s) => {
-    seats.forEach((seat) => {
-      showSeatRelations.push({ showId: s.id, seatId: seat.id })
-    })
-  })
-  await db.showSeatRelation.createMany({ data: showSeatRelations })
-}
-
-const seedSeat = async () => {
-  console.log("Seeding seats ... ")
+// -------------------- Seed Seats --------------------
+const seedSeats = async () => {
+  console.log("Seeding seats...")
   const rows = "ABCDEF"
   const seats: Prisma.SeatCreateManyInput[] = []
+
   for (let i = 0; i < 6; i++) {
     let seatClass = "front"
-    let price = 3000
-    if (i == 2 || i == 3) {
+    let price = 7
+    if (i === 2 || i === 3) {
       seatClass = "mid"
-      price = 5000
+      price = 13
     }
-    if (i == 4 || i == 5) {
+    if (i === 4 || i === 5) {
       seatClass = "vip"
-      price = 7000
+      price = 20
     }
+
     for (let j = 1; j <= 10; j++) {
       seats.push({
         class: seatClass,
@@ -94,73 +70,105 @@ const seedSeat = async () => {
       })
     }
   }
+
   await db.seat.createMany({ data: seats })
 }
 
-const seedBookingsAndTickets = async () => {
-  console.log("Seeding bookings and tickets ... ")
-  const bookings: Prisma.BookingCreateManyInput[] = []
-  const tickets: Prisma.TicketCreateManyInput[] = []
+// -------------------- Seed Shows & ShowSeatRelations --------------------
+const seedShows = async () => {
+  console.log("Seeding shows and show-seat relations...")
+  const movies = await db.movie.findMany()
+  const seats = await db.seat.findMany()
 
-  for (let i = 0; i < 5; i++) {
-    bookings.push({ totalAmount: 0, email: process.env.CUSTOMER_EMAIL_SEED! })
-  }
-  await db.booking.createMany({ data: bookings })
+  for (const movie of movies) {
+    for (let i = 0; i < 5; i++) {
+      const showDate = faker.date.soon({ days: 7, refDate: movie.releaseDate })
+      showDate.setHours(0, 0, 0, 0)
+      const startTime = new Date(showDate)
+      startTime.setHours(faker.number.int({ min: 8, max: 16 }))
+      const endTime = new Date(startTime)
+      endTime.setHours(startTime.getHours() + 2)
 
-  const dbBookings = await db.booking.findMany()
-  const shows = await db.show.findMany()
-  const showIds = shows.map((id) => id.id)
-  const showSeats = await db.showSeatRelation.findMany({
-    where: { showId: { in: showIds } },
-    include: {
-      seat: {
-        select: {
-          price: true,
+      const show = await db.show.create({
+        data: {
+          movieId: movie.id,
+          date: showDate,
+          startTime,
+          endTime,
         },
-      },
-    },
-  })
-
-  dbBookings.forEach(async (booking) => {
-    let totalAmount = 0
-    const showId = showIds[faker.number.int({ min: 0, max: showIds.length - 1 })]
-
-    for (let i = 0; i < faker.number.int({ min: 1, max: 5 }); i++) {
-      let showSeat = showSeats[faker.number.int({ min: 0, max: showSeats.length - 1 })]
-      while (showSeat.status === "purchased") {
-        showSeat = showSeats[faker.number.int({ min: 0, max: showSeats.length - 1 })]
-      }
-      tickets.push({
-        bookingId: booking.id,
-        showId,
-        seatId: showSeat.seatId,
-        amount: showSeat.seat.price,
       })
-      totalAmount += showSeat.seat.price
+
+      // Create show-seat relations
+      const showSeatRelations: Prisma.ShowSeatRelationCreateManyInput[] = seats.map((seat) => ({
+        showId: show.id,
+        seatId: seat.id,
+        status: "available",
+      }))
+
+      await db.showSeatRelation.createMany({ data: showSeatRelations })
     }
-
-    await db.booking.update({ where: { id: booking.id }, data: { totalAmount } })
-  })
-
-  await db.ticket.createMany({ data: tickets })
-
-  const dbTickets = await db.ticket.findMany()
-  dbTickets.forEach(async (t) => {
-    const { seatId, showId } = t
-    await db.showSeatRelation.updateMany({
-      where: {
-        seatId,
-        showId,
-      },
-      data: {
-        status: "purchased",
-      },
-    })
-  })
+  }
 }
 
+// -------------------- Seed Bookings & Tickets --------------------
+const seedBookingsAndTickets = async () => {
+  console.log("Seeding bookings and tickets...")
+  const bookings: Prisma.BookingCreateManyInput[] = []
+  const dbShows = await db.show.findMany()
+  const seats = await db.seat.findMany()
+
+  // Create bookings
+  for (let i = 0; i < 5; i++) {
+    bookings.push({ email: process.env.CUSTOMER_EMAIL_SEED!, totalAmount: 0 })
+  }
+
+  await db.booking.createMany({ data: bookings })
+  const dbBookings = await db.booking.findMany()
+
+  for (const booking of dbBookings) {
+    let totalAmount = 0
+    const ticketsToCreate: Prisma.TicketCreateManyInput[] = []
+
+    // Randomly pick a show for the booking
+    const show = dbShows[faker.number.int({ min: 0, max: dbShows.length - 1 })]
+
+    // Pick 1–5 random seats
+    const seatCount = faker.number.int({ min: 1, max: 5 })
+    const availableSeats = await db.showSeatRelation.findMany({
+      where: { showId: show.id, status: "available" },
+      include: { seat: true },
+    })
+
+    for (let i = 0; i < seatCount && availableSeats.length > 0; i++) {
+      const seatIndex = faker.number.int({ min: 0, max: availableSeats.length - 1 })
+      const chosenSeat = availableSeats.splice(seatIndex, 1)[0]
+
+      ticketsToCreate.push({
+        bookingId: booking.id,
+        showId: show.id,
+        seatId: chosenSeat.seatId,
+        amount: chosenSeat.seat.price,
+      })
+
+      totalAmount += chosenSeat.seat.price
+    }
+
+    await db.ticket.createMany({ data: ticketsToCreate })
+    await db.booking.update({ where: { id: booking.id }, data: { totalAmount } })
+
+    // Mark seats as purchased
+    for (const ticket of ticketsToCreate) {
+      await db.showSeatRelation.updateMany({
+        where: { showId: ticket.showId, seatId: ticket.seatId },
+        data: { status: "purchased" },
+      })
+    }
+  }
+}
+
+// -------------------- Main --------------------
 const main = async () => {
-  console.log("Cleaning database ... ")
+  console.log("Cleaning database...")
   await db.user.deleteMany()
   await db.showSeatRelation.deleteMany()
   await db.ticket.deleteMany()
@@ -170,18 +178,19 @@ const main = async () => {
   await db.movie.deleteMany()
 
   await seedUser()
-  await seedMovie()
-  await seedSeat()
-  await seedShow()
+  await seedMovies()
+  await seedSeats()
+  await seedShows()
   await seedBookingsAndTickets()
+
+  console.log("✅ Database seeding completed!")
 }
 
 main()
-  .then(async () => {
-    await db.$disconnect()
-  })
-  .catch(async (e) => {
+  .catch((e) => {
     console.error(e)
-    await db.$disconnect()
     process.exit(1)
+  })
+  .finally(async () => {
+    await db.$disconnect()
   })

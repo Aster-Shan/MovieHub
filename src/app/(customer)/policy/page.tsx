@@ -42,12 +42,12 @@ const PrivacyPolicy = () => {
         owned subsidiaries of Searchlight Ventures Limited.
       </p>
       <p className="mt-2">
-        Only these entities process your personal data. When we mention “Light Cinemas”, “we”, “us”
-        or “our” in this Privacy Policy, we are referring to one or more of these entities,
+        Only these entities process your personal data. When we mention “MovieHubis”, “we”, “us” or
+        “our” in this Privacy Policy, we are referring to one or more of these entities,
       </p>
       <p className="mt-2">
         You can contact us at:{" "}
-        <a href="moviehub@gmail.com" className="text-primary underline">
+        <a href="" className="text-primary underline">
           privacy@moviehub@gmail.co.uk
         </a>
       </p>

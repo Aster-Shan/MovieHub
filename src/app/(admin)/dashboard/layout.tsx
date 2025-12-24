@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer"
-import "../globals.css"
-import "../styles/globals.css"
+import "../../../styles/globals.css"
 import Nav from "./_components/Nav"
 import Sidebar from "./_components/Sidebar"
 import Topbar from "./_components/Topbar"

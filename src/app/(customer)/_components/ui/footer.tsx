@@ -157,9 +157,7 @@ const footer = () => {
               </h2>
               <ul className="font-medium text-gray-500 dark:text-gray-400">
                 <li className="mb-4">
-                  <a
-                    href="https://github.com/nainghtetlinn/movie-booking-system"
-                    className="hover:underline">
+                  <a href="https://github.com/Aster-Shan/MovieHub" className="hover:underline">
                     Github
                   </a>
                 </li>
@@ -189,15 +187,12 @@ const footer = () => {
         <div className="sm:flex sm:items-center sm:justify-between">
           <span className="text-sm text-gray-500 dark:text-gray-400 sm:text-center">
             © {new Date().getFullYear()}{" "}
-            <a href="https://flowbite.com/" className="hover:underline">
+            <a href="" className="hover:underline">
               Movie Booking System™
             </a>
             . All Rights Reserved.
           </span>
-          <div className="mt-4 flex sm:mt-0 sm:justify-center">
-            {/* Social Icons */}
-            {/* Keep your existing social icons here */}
-          </div>
+          <div className="mt-4 flex sm:mt-0 sm:justify-center"></div>
         </div>
       </div>
     </footer>

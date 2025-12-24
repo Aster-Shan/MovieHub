@@ -4,7 +4,6 @@ import { checkPermission } from "@/configs/auth"
 import db from "@/configs/db"
 import resend from "@/configs/resend"
 import { bookingClientSchema } from "@/validators/booking"
-import { Prisma } from "@prisma/client"
 import SuccessBooking from "emails/success-booking"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
@@ -53,7 +52,6 @@ export async function getCheckout({
 
   return { movie, show, seats }
 }
-
 export async function makeBooking(data: {
   movieId: string
   showId: string
@@ -62,40 +60,60 @@ export async function makeBooking(data: {
 }) {
   const { movieId, showId, seatIds, email } = bookingClientSchema.parse(data)
 
-  const movie = await db.movie.findUnique({ where: { id: movieId } })
-  const show = await db.show.findUnique({ where: { id: showId, movieId } })
-  const seats = await db.seat.findMany({
-    where: { id: { in: seatIds }, showSeatRelation: { some: { showId, status: "available" } } },
+  const booking = await db.$transaction(async (tx) => {
+    const movie = await tx.movie.findUnique({
+      where: { id: movieId },
+    })
+
+    const show = await tx.show.findUnique({
+      where: { id: showId, movieId },
+    })
+
+    if (!movie || !show) {
+      throw new Error("Invalid movie or show")
+    }
+    const seats = await tx.seat.findMany({
+      where: {
+        id: { in: seatIds },
+        showSeatRelation: {
+          some: { showId, status: "available" },
+        },
+      },
+    })
+
+    if (seats.length !== seatIds.length) {
+      throw new Error("One or more seats already booked")
+    }
+    const booking = await tx.booking.create({
+      data: {
+        email,
+        totalAmount: 0,
+      },
+    })
+    const tickets = seats.map((s) => ({
+      amount: s.price,
+      bookingId: booking.id,
+      showId,
+      seatId: s.id,
+    }))
+
+    await tx.ticket.createMany({ data: tickets })
+    await tx.showSeatRelation.updateMany({
+      where: {
+        showId,
+        seatId: { in: seatIds },
+        status: "available", // extra safety
+      },
+      data: { status: "purchased" },
+    })
+    const totalAmount = seats.reduce((sum, s) => sum + s.price, 0)
+
+    return await tx.booking.update({
+      where: { id: booking.id },
+      data: { totalAmount },
+    })
   })
-
-  if (!movie || !show || seats.length === 0 || seats.length !== seatIds.length)
-    throw new Error("Something went wrong.")
-
-  // initialize booking
-  const booking = await db.booking.create({ data: { email, totalAmount: 0 } })
-
-  // create ticket for each seat
-  let totalAmount = 0
-  let tickets: Prisma.TicketCreateManyInput[] = []
-  seats.forEach((s) => {
-    totalAmount += s.price
-    tickets.push({ amount: s.price, bookingId: booking.id, showId: show.id, seatId: s.id })
-  })
-  await db.ticket.createMany({ data: tickets })
-
-  // update booking total amount
-  const updatedBooking = await db.booking.update({
-    where: { id: booking.id },
-    data: { totalAmount },
-  })
-
-  // update seat status
-  await db.showSeatRelation.updateMany({
-    where: { showId: show.id, seatId: { in: seatIds } },
-    data: { status: "purchased" },
-  })
-
-  redirect("/success?bookingId=" + updatedBooking.id)
+  redirect("/success?bookingId=" + booking.id)
 }
 
 export async function deleteBooking(id: string) {
@@ -103,7 +121,6 @@ export async function deleteBooking(id: string) {
   if (!isAllow) return { success: false, message: "Permission denied." }
 
   try {
-    // find tickets
     const tickets = await db.ticket.findMany({ where: { bookingId: id } })
     const seatIds = tickets.map((t) => t.seatId)
     const showId = tickets[0].showId
