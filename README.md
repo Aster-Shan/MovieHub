@@ -115,7 +115,7 @@ The following roadmap outlines scheduled features intended for upcoming deployme
 ### Aster Phyoe
 **Graduate Software Developer**
 
-* **LinkedIn:** [@your-profile](https://linkedin.com/in/your-profile)
+* **LinkedIn:** [www.linkedin.com/in/aster-phyoe]
 * **Email:** [asterphyoe16@gmail.com]
 
 ---
