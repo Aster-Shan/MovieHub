@@ -18,6 +18,31 @@ It also includes a powerful administrative dashboard featuring Role-Based Access
 
 MovieHub simulates a real-world cinema ecosystem. This project was engineered to strengthen full-stack development skills and demonstrate practical experience with modern web application architectures, robust database relations, and clean UI/UX design patterns.
 
+## Screenshots
+
+### Home Page
+<img width="1266" height="595" alt="Screenshot 2026-06-11 at 00 17 08" src="https://github.com/user-attachments/assets/4ff7d853-2c17-45fd-8616-b3573ea6ee37" />
+
+### To book movie
+<img width="782" height="544" alt="Screenshot 2026-06-11 at 00 17 53" src="https://github.com/user-attachments/assets/8479901e-2186-40db-b2ff-0a934a9a5e4d" />
+
+### Movie Selection
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 19 05" src="https://github.com/user-attachments/assets/b22f0d59-5807-4d21-ac9c-23c0e88f4602" />
+
+### Show Time Selection
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 20 08" src="https://github.com/user-attachments/assets/544e8258-d92b-47e6-b68a-4da3b2dc6ffa" />
+
+### Seat Selection
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 20 37" src="https://github.com/user-attachments/assets/b9f5555f-0e92-4aa4-af79-0cdb1f4f6a67" />
+
+### Confirm Checkout
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 20 57" src="https://github.com/user-attachments/assets/6c6ed776-e9d7-47b6-8642-3182352795b0" />
+
+### Payment Page
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 21 28" src="https://github.com/user-attachments/assets/be356106-bda3-4571-9c1c-3d6c1aec636d" />
+
+<img width="768" height="515" alt="Screenshot 2026-06-11 at 00 21 56" src="https://github.com/user-attachments/assets/f18c60b3-6852-48dd-a0d8-fe7919cb634e" />
+
 ### Key Highlights
 * **Frictionless Checkout:** Seamless guest ticket booking workflow.
 * **Interactive UI:** Dynamic seat map configuration with variable tier pricing.
