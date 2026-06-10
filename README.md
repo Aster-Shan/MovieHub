@@ -1,26 +1,100 @@
-# Movie Booking System
+# MovieHub – Web-Based Movie Booking System
 
-A **web-based movie booking system** that allows users to book movie tickets online without the need for an account. Admins have a dashboard to manage movies, shows, bookings, and staff with role-based permissions.
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=flat-square&logo=prisma)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql)](https://www.postgresql.org/)
 
-## Demo
+A full-stack, web-based movie booking system that enables users to seamlessly browse movies, select seats in real-time, process secure mock payments, and receive booking confirmations—all without requiring an account. 
 
-[View Demo](https://movie-hub-ten-beta.vercel.app/)
+It also includes a powerful administrative dashboard featuring Role-Based Access Control (RBAC) to manage schedules, movies, and staff permissions. Built with a focus on scalability, security, and exceptional user experience.
+
+🔗 **[Live Demo](https://movie-hub-ten-beta.vercel.app/)**
+
+---
+
+## Overview
+
+MovieHub simulates a real-world cinema ecosystem. This project was engineered to strengthen full-stack development skills and demonstrate practical experience with modern web application architectures, robust database relations, and clean UI/UX design patterns.
+
+### Key Highlights
+* **Frictionless Checkout:** Seamless guest ticket booking workflow.
+* **Interactive UI:** Dynamic seat map configuration with variable tier pricing.
+* **Enterprise Administration:** Granular back-office management tools using Role-Based Access Control (RBAC).
+
+---
+
 ## Features
 
-- Booking without needing an account
-- Admin dashboard
-- Role-based permissions
-- Email notifications for bookings
-- Payment System
-- Dynamic pricing for seats
-- responsive design
+### Customer Experience
+* **Browse & Filter:** Explore current and upcoming movies, showtimes, and rich metadata descriptions.
+* **Interactive Seating:** Visually select seats with real-time dynamic pricing updates based on seat tiers.
+* **Guest Checkout:** Rapid booking pipeline without mandatory user account creation.
+* **Automated Confirmations:** Instant email notifications with transactional booking receipts.
+* **Responsive Layout:** Fully optimized UX across desktop, tablet, and mobile displays.
 
+### Admin & Staff Dashboard
+* **Dashboard Overview:** High-level metrics tracking sales, active bookings, and popular showtimes.
+* **Movie Management:** Full CRUD operations for updating, adding, and removing movie listings.
+* **Showtime Management:** Dynamic scheduling engine to link movies, rooms, and times.
+* **Booking Management:** Real-time logging, cancellation, and searching of guest receipts.
+* **Staff & Role Management:** Access control with strict data boundaries based on assigned permissions (RBAC).
+* **Pricing Configuration:** Control seat multipliers and base pricing structures on the fly.
+
+---
 
 ## Tech Stack
 
-*
-- **Frontend:** Next.js, TypeScript, Tailwind CSS, Shadcn UI  
-- **Backend:** Prisma, PostgreSQL, Next Auth  
-- **Utilities:** Zod, React Hook Form, React Query, React Table  
+| Layer | Technologies |
+| :--- | :--- |
+| **Frontend** | Next.js (App Router), TypeScript, Tailwind CSS, Shadcn UI |
+| **Backend & Auth** | Next.js Server Actions / API Routes, NextAuth.js |
+| **Database & ORM** | PostgreSQL, Prisma ORM |
+| **State & Forms** | React Query, React Hook Form, Zod (Schema Validation) |
+| **Utilities** | React Table (TanStack), Lucide Icons |
 
+---
 
+## Project Structure
+
+The project follows a modular, scalable architecture for high maintainability:
+
+```text
+src/
+├── app/            # Next.js App Router (Pages, Layouts, API Routes)
+├── components/     # Global reusable UI components (Buttons, Modals, Inputs)
+├── features/       # Feature-specific modules (e.g., booking, admin, seats)
+├── hooks/          # Custom React hooks
+├── lib/            # Third-party configurations (Prisma client, NextAuth options)
+├── services/       # API and data fetching layer
+├── types/          # Global TypeScript type definitions
+├── validations/    # Zod schemas for form and payload validation
+└── utils/          # Shared helper functions
+```
+## Future Enhancements
+
+The following roadmap outlines scheduled features intended for upcoming deployment iterations:
+
+* **Digital Tickets:** Generation of secure, verifiable QR codes on checkout for paperless check-ins.
+* **Real-Time Seat Reserving:** Integrating WebSockets to dynamically lock a seat map node during user selection pipelines to actively prevent cart collisions.
+* **Customer Profiles:** Optional user registration pipelines allowing long-term order history access and saved preferences.
+* **Peer Reviews:** Multi-tiered social metadata integrations allowing movie reviews and rating scores.
+* **Multi-Cinema Infrastructure:** Transforming the database layer to safely provision regional chains and location-specific pricing grids.
+* **Analytics Panel:** Advanced operational charting dashboards mapping performance parameters (gross income trends, theater capacity efficiencies).
+
+---
+
+## Author
+
+### Aster Phyoe
+**Graduate Software Developer**
+
+* **LinkedIn:** [@your-profile](https://linkedin.com/in/your-profile)
+* **Email:** [asterphyoe16@gmail.com]
+
+---
+
+##  License
+
+This project is open-source and intended purely for educational and portfolio demonstration purposes. Feel free to reference the architectural strategies used here for your own systems.
