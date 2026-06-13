@@ -46,6 +46,7 @@ MovieHub simulates a real-world cinema ecosystem. This project was engineered to
 ### Email Confirmation
 <img width="755" height="400" alt="Screenshot 2026-06-13 at 17 33 14" src="https://github.com/user-attachments/assets/829a336d-c23e-4155-92ca-6e5343baf617" />
 
+<img width="755" height="400" alt="Screenshot 2026-06-13 at 17 43 26" src="https://github.com/user-attachments/assets/b2afa429-f82c-42e9-95ec-1e02dd078ca2" />
 
 ### Key Highlights
 * **Frictionless Checkout:** Seamless guest ticket booking workflow.
